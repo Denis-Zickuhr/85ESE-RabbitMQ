@@ -1,0 +1,24 @@
+version: "3"
+services:
+  rabbitmq:
+      image: "rabbitmq:3-management"
+      ports:
+        - "5672:5672"
+        - "15672:15672"
+      volumes:
+        - 'rabbitmq_data:/data'
+        - ./init/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf:ro
+        - ./init/definitions.json:/etc/rabbitmq/definitions.json:ro
+  mysql:
+    image: mysql:latest
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+      MYSQL_DATABASE: systemdb
+      MYSQL_USER: mysql
+      MYSQL_PASSWORD: 123456
+    ports:
+      - "3306:3306"
+
+volumes:
+  rabbitmq_data:
