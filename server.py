@@ -54,7 +54,8 @@ def insert_user(user):
                 connection.execute(ins)
 
     except SQLAlchemyError as e:
-        # Handle database errors
+        with open('error.log', 'a') as f:
+            f.write(f"Database error: {e}\n")
         print("Database error:", e)
 
 
