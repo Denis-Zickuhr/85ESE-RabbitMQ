@@ -1,4 +1,7 @@
 from datetime import datetime
+
+import random
+import time
 from sqlalchemy import create_engine, MetaData, Table
 from json import loads
 import consume
@@ -12,6 +15,11 @@ def callback(ch, method, properties, body):
 
 def insert_user(user):
     try:
+
+        delay = random.randint(5, 20)
+        print(f"Inserting user with a delay of {delay} seconds")
+        time.sleep(delay)
+
         engine = create_engine('mysql://mysql:123456@localhost:3306/systemdb')
         metadata = MetaData()
         metadata.bind = engine
