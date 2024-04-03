@@ -8,16 +8,26 @@ O RabbitMQ é um software de mensageiria de código aberto que implementa o prot
 
 Em RabbitMQ, as filas são como buffers onde as mensagens são armazenadas temporariamente antes de serem consumidas pelos aplicativos. Elas permitem que os produtores de mensagens enviem mensagens independentemente dos consumidores estarem prontos para processá-las, garantindo assim a escalabilidade e a resiliência do sistema.
 
+### Consumir mensagens, uma ação irreversível 
+
+No RabbitMQ, não permite que uma mensagem seja lida mais de uma vez, ao ser lida, uma mensagem sofre o processo de purge e eliminada na fila, versões mais recentes permitem uma republicação na fila a custo da ordenação/consistência (rabbitmq > 2.7.0). Existem plugins capazes de realizar um debug do fluxo das filas, como por exemplo o [Firehose Tracer | RabbitMQ](https://www.rabbitmq.com/docs/firehose).
+
 ## Funcionamento do Rabbit-MQ
 
 ```mermaid
-flowchart TD
-    subgraph Aplicativos
-        A[Produtor] --> B[Fila]
-        B --> C[Consumidor]
-    end
-    subgraph RabbitMQ
-        D[Exchange] --> B
+sequenceDiagram
+    participant Produtor
+    participant Fila
+    participant Consumidor
+    participant Exchange
+
+    Produtor->>Fila: Enviar Mensagem
+    Fila->>Consumidor: Receber Mensagem
+    Consumidor-->>Fila: Confirmar Mensagem
+    alt Utilizando Exchange
+        Fila->>Exchange: Encaminhar Mensagem
+        Exchange-->>Fila: Receber Mensagem
+        Fila->>Consumidor: Entregar Mensagem
     end
 ```
 
