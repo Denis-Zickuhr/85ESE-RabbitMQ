@@ -16,10 +16,10 @@ No RabbitMQ, não permite que uma mensagem seja lida mais de uma vez, ao ser lid
 
 ```mermaid
 sequenceDiagram
-    participant Produtor (A)
-    participant Fila (B)
-    participant Consumidor (C)
-    participant Exchange (D)
+    participant Produtor
+    participant Fila
+    participant Consumidor
+    participant Exchange
 
     Produtor->>Fila: Enviar Mensagem
     Fila->>Consumidor: Receber Mensagem
